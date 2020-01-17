@@ -30,10 +30,20 @@ const mvdown=()=>{
 }
 document.addEventListener("keydown",mvdown);
 
+let p1=130;
+let p2=130;
 
 const startGame=()=>{
-	birdX+=10;
-	
+	if(birdX!=(p1-30)){
+		//birdX+=1;
+		birdY++;
+		p1--;
+	}
+		
+	ctx.drawImage(bg,0,0);
+	ctx.drawImage(bird,birdX,birdY);
+	ctx.drawImage(pipeNorth,p1,0);
+	ctx.drawImage(pipeSouth,p1,330);
 	ctx.drawImage(fg,0,cvs.height - fg.height);
 	requestAnimationFrame(startGame);
 }
