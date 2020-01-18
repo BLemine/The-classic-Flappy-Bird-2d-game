@@ -17,11 +17,11 @@ let flyMusic = new Audio();
 let scoreMusic = new Audio();
 
 //
-bird.src="bird.png";
-bg.src = "background.png";
-fg.src = "fg.png";
-pipeNorth.src = "pipeNorth.png";
-pipeSouth.src = "pipeSouth.png";
+bird.src="img/bird.png";
+bg.src = "img/background.png";
+fg.src = "img/fg.png";
+pipeNorth.src = "img/pipeNorth.png";
+pipeSouth.src = "img/pipeSouth.png";
 
 // drawing images
 ctx.drawImage(bg,0,0);
@@ -47,58 +47,42 @@ let pipe=[
 ]
 let pas=p1+170;
 const startGame=()=>{
-	ctx.drawImage(bg,0,-400);
-	//
-	for(let i in pipe){
-		ctx.drawImage(pipeNorth,pipe[i].x,pipe[i].y);
-		ctx.drawImage(pipeSouth,pipe[i].x,pipe[i].y+pipeNorth.height+85);
-		pipe[i].x--;
+	if(!finish){
+		ctx.drawImage(bg,0,-400);
+		//
+		for(let i in pipe){
+			ctx.drawImage(pipeNorth,pipe[i].x,pipe[i].y);
+			ctx.drawImage(pipeSouth,pipe[i].x,pipe[i].y+pipeNorth.height+85);
+			pipe[i].x--;
 
-		if(pipe[i].x==325){
-			pipe.push(
-				{
-					x:cvs.width,
-					y:Math.floor(Math.random()*pipeNorth.height)-pipeNorth.height	
-				}		
-			)
+			if(pipe[i].x==325){
+				pipe.push(
+					{
+						x:cvs.width,
+						y:Math.floor(Math.random()*pipeNorth.height)-pipeNorth.height	
+					}		
+				)
+			}
+			if(birdX+bird.width>=pipe[i].x && birdX<=pipe[i].x+pipeNorth.width && (birdY <= pipe[i].y + pipeNorth.height || birdY+bird.height >= pipe[i].y+pipeNorth.height+85) || birdY + bird.height >=  cvs.height - fg.height){
+				finish=true
+			}
 		}
-if(birdX+bird.width>=pipe[i].x && birdX<=pipe[i].x+pipeNorth.width && (birdY <= pipe[i].y + pipeNorth.height || birdY+bird.height >= pipe[i].y+pipeNorth.height+85) || birdY + bird.height >=  cvs.height - fg.height){
-	location.reload()
-}
-	}
 
 
 	
-	
-//
-	
-	//birdX!=(p1-30)
-/*	if((birdY>(pipeNorth.height - bird.height)) || (p1>(birdX+bird.width)) || (pas>(birdX+bird.width))  ){
-		//birdX+=1;
 		birdY++;
-		p1--;pas--;
-		
+		ctx.drawImage(bird,birdX,birdY);
+		ctx.drawImage(fg,0,cvs.height - fg.height);
+		ctx.drawImage(fg,fg.width,cvs.height - fg.height);
+
+		requestAnimationFrame(startGame);
 	}
-	if(!(birdY<(pipeNorth.height - bird.height) && (p1<(birdX+bird.width) || pas<(birdX+bird.width)) )){
-		
-	}*/
-	birdY++;
-	ctx.drawImage(bird,birdX,birdY);
-	//ctx.drawImage(pipeNorth,p1,0);
-	//ctx.drawImage(pipeSouth,p1,330);
-	//ctx.drawImage(pipeNorth,pas,0);
-	ctx.drawImage(fg,0,cvs.height - fg.height);
-	ctx.drawImage(fg,fg.width,cvs.height - fg.height);
-	if(birdX==(p1-30)){finish=true}
-	requestAnimationFrame(startGame);
+	else{
+		// TODO Code
+	}
 }
 
 startGame();
-/*setInterval(()=>{
-	birdX+=10;
-	ctx.clearRect(10,160,10,150)
-	ctx.drawImage(bird,birdX,birdY);
-},100);*/
 
 
 
