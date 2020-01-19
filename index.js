@@ -30,11 +30,13 @@ const getScore=(score)=>{
 		}
 	}
 }
-// 
-let flyMusic = new Audio();
-let scoreMusic = new Audio();
+// effects 
+const flyMusic = new Audio();
+const scoreMusic = new Audio();
+const hurt=new Audio();
 flyMusic.src="effects/fly.mp3";
 scoreMusic.src="effects/score.mp3";
+hurt.src="effects/falling.wav";
 
 // resources
 bird.src = "img/bluebird-upflap.png";
@@ -58,7 +60,7 @@ let finish = false;
 const mvUp = (e) => {
 	//if(e.key=="ArrowUp" && !finish)
 	birdY -= 25;
-	//flyMusic.play();
+	flyMusic.play();
 }
 
 // the jump eventListener
@@ -80,11 +82,11 @@ moveBird=()=>{
 moveBird();
 const MB=setInterval(moveBird,600);
 //
-
 const startGame = () => {
 	if (!finish) {
 		// drawing the background image
 		ctx.drawImage(bg, 0, -400);
+		
 		// adding pipes
 		for (let i in pipe) {
 			ctx.drawImage(pipeNorth, pipe[i].x, pipe[i].y);
@@ -102,7 +104,6 @@ const startGame = () => {
 			if (birdX + bird.width >= pipe[i].x && birdX <= pipe[i].x + pipeNorth.width && (birdY <= pipe[i].y + pipeNorth.height || birdY + bird.height >= pipe[i].y + pipeNorth.height + 85) || birdY + bird.height >= cvs.height - fg.height) {
 				finish = true;
 			}if(pipe[i].x == birdX-bird.width){
-				console.log("dhe");
 				scoreText++;
 				score.src="img/score/"+getScore(scoreText)+".png";
 			}
@@ -119,6 +120,7 @@ const startGame = () => {
 	}
 	else {
 		// in case of "game over"
+		hurt.play();
 		ctx.drawImage(gameover,150,150);
 		clearInterval(MB);
 		// to restart the game
