@@ -16,8 +16,11 @@ let birdY = 150;
 // the score
 let scoreText=0;
 const getScore=(score)=>{
-	if(score<10)
+	if(score<10){
+		scoreMusic.play();
 		return score;
+	}
+		
 	else{
 		switch (score) {
 			case 10:
@@ -30,6 +33,8 @@ const getScore=(score)=>{
 // 
 let flyMusic = new Audio();
 let scoreMusic = new Audio();
+flyMusic.src="effects/fly.mp3";
+scoreMusic.src="effects/score.mp3";
 
 // resources
 bird.src = "img/bluebird-upflap.png";
@@ -53,6 +58,7 @@ let finish = false;
 const mvUp = (e) => {
 	//if(e.key=="ArrowUp" && !finish)
 	birdY -= 25;
+	//flyMusic.play();
 }
 
 // the jump eventListener
