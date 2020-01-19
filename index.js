@@ -40,7 +40,7 @@ hurt.src="effects/falling.wav";
 
 // resources
 bird.src = "img/bluebird-upflap.png";
-bg.src = "img/background.png";
+bg.src = "img/city_bird.jpg";
 fg.src = "img/fg.png";
 pipeNorth.src = "img/pipeNorth.png";
 pipeSouth.src = "img/pipeSouth.png";
@@ -72,6 +72,12 @@ let pipe = [
 		x: cvs.width,
 		y: 0
 	}
+];
+let ground=[
+	{
+		x:0,
+		y:cvs.height - fg.height
+	}
 ]
 // The flap
 moveBird=()=>{
@@ -85,7 +91,7 @@ const MB=setInterval(moveBird,600);
 const startGame = () => {
 	if (!finish) {
 		// drawing the background image
-		ctx.drawImage(bg, 0, -400);
+		ctx.drawImage(bg, 0, -290);
 		
 		// adding pipes
 		for (let i in pipe) {
@@ -108,13 +114,29 @@ const startGame = () => {
 				score.src="img/score/"+getScore(scoreText)+".png";
 			}
 		}
+		// ground
+		for(let i in ground){
+			ctx.drawImage(fg, ground[i].x, cvs.height - fg.height);
+			ctx.drawImage(fg, ground[i].x+fg.width, cvs.height - fg.height);
+
+			ground[i].x--;
+			if(ground[i].x==-100){
+				ground.push(
+					{
+						x:0,
+						y:cvs.height - fg.height
+					}
+				)
+			}
+		}
+		//
 		// the movement of the bird
 		birdY++;
 		// drawing the images
 		ctx.drawImage(bird, birdX, birdY);
 		ctx.drawImage(score,240,120);
-		ctx.drawImage(fg, 0, cvs.height - fg.height);
-		ctx.drawImage(fg, fg.width, cvs.height - fg.height);
+		//ctx.drawImage(fg, 0, cvs.height - fg.height);
+		//ctx.drawImage(fg, fg.width, cvs.height - fg.height);
 		// to repeat the scene 
 		requestAnimationFrame(startGame);
 	}
