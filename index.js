@@ -34,6 +34,8 @@ const getScore=(score)=>{
 const flyMusic = new Audio();
 const scoreMusic = new Audio();
 const hurt=new Audio();
+//const back_gif=new GIF();
+//back_gif.load("GIFurl.gif");
 flyMusic.src="effects/fly.mp3";
 scoreMusic.src="effects/score.mp3";
 hurt.src="effects/falling.wav";
@@ -47,11 +49,8 @@ pipeSouth.src = "img/pipeSouth.png";
 score.src="img/score/"+scoreText+".png";
 gameover.src = "img/gameover.png";
 
-// drawing images
-ctx.drawImage(bg, 0, 0);
-ctx.drawImage(bird, birdX, birdY);
-ctx.drawImage(pipeNorth, 130, 0);
-ctx.drawImage(pipeSouth, 130, 330);
+
+
 
 // the game state
 let finish = false;
@@ -61,8 +60,16 @@ const mvUp = (e) => {
 	//if(e.key=="ArrowUp" && !finish)
 	birdY -= 25;
 	flyMusic.play();
+	
 }
-
+// drawing images
+ctx.save()
+ctx.drawImage(bg, 0, 0);
+ctx.drawImage(pipeNorth, 130, 0);
+ctx.drawImage(pipeSouth, 130, 330);
+ctx.rotate(45)
+ctx.drawImage(bird, birdX, birdY);
+ctx.restore();
 // the jump eventListener
 document.addEventListener("keyup", mvUp);
 
@@ -85,21 +92,23 @@ moveBird=()=>{
 	setTimeout(()=>{bird.src="img/bluebird-downflap.png"},300);
 	setTimeout(()=>{bird.src="img/bluebird-upflap.png"},400)
 }
+window.onload=()=>{
+	flyMusic.play()
+}
 moveBird();
 const MB=setInterval(moveBird,600);
 //
 const startGame = () => {
 	if (!finish) {
 		// drawing the background image
+		ctx.save();
 		ctx.drawImage(bg, 0, -290);
-		
 		// adding pipes
 		for (let i in pipe) {
 			ctx.drawImage(pipeNorth, pipe[i].x, pipe[i].y);
 			ctx.drawImage(pipeSouth, pipe[i].x, pipe[i].y + pipeNorth.height + 85);
-			pipe[i].x--;
-
-			if (pipe[i].x == 325) {
+			pipe[i].x-=1.2;
+			if (Math.floor(pipe[i].x) == 344) {
 				pipe.push(
 					{
 						x: cvs.width,
@@ -109,7 +118,7 @@ const startGame = () => {
 			}
 			if (birdX + bird.width >= pipe[i].x && birdX <= pipe[i].x + pipeNorth.width && (birdY <= pipe[i].y + pipeNorth.height || birdY + bird.height >= pipe[i].y + pipeNorth.height + 85) || birdY + bird.height >= cvs.height - fg.height) {
 				finish = true;
-			}if(pipe[i].x == birdX-bird.width){
+			}if(Math.floor(pipe[i].x) == birdX-bird.width){
 				scoreText++;
 				score.src="img/score/"+getScore(scoreText)+".png";
 			}
@@ -133,7 +142,9 @@ const startGame = () => {
 		// the movement of the bird
 		birdY++;
 		// drawing the images
+		ctx.rotate(0)
 		ctx.drawImage(bird, birdX, birdY);
+		ctx.restore()
 		ctx.drawImage(score,240,120);
 		//ctx.drawImage(fg, 0, cvs.height - fg.height);
 		//ctx.drawImage(fg, fg.width, cvs.height - fg.height);
