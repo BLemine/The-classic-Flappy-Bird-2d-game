@@ -1,4 +1,6 @@
+// to get the canvas by Id
 const cvs = document.getElementById('canvas');
+// to get the context 
 const ctx = cvs.getContext("2d");
 
 // images to be drawn
@@ -49,9 +51,37 @@ pipeSouth.src = "img/pipeSouth.png";
 score.src="img/score/"+scoreText+".png";
 gameover.src = "img/gameover.png";
 
+/////////////////////////////////////////
+function getMousePos(canvas, event) {
+	var rect = canvas.getBoundingClientRect();
+	return {
+		x: event.clientX - rect.left,
+		y: event.clientY - rect.top
+	};
+}
+function isInside(pos, rect){
+	return pos.x > rect.x && pos.x < (rect.x+rect.width) && pos.y < (rect.y+rect.heigth) && pos.y > rect.y
+}
+var rect = {
+	x:0,
+	y:0,
+	width:cvs.width,
+	heigth:cvs.height
+};
+cvs.addEventListener('click', function(evt) {
+	var mousePos = getMousePos(cvs, evt);
 
-
-
+	if (isInside(mousePos,rect)) {
+		alert('clicked inside rect');
+		console.log(mousePos)
+		
+    }else{
+		alert('clicked outside rect');
+		console.log(mousePos)
+		console.log(rect)
+    }	
+}, false);
+////////////////////////////////
 // the game state
 let finish = false;
 
@@ -63,15 +93,13 @@ const mvUp = (e) => {
 	
 }
 // drawing images
-ctx.save()
+//ctx.save()
 ctx.drawImage(bg, 0, 0);
 ctx.drawImage(pipeNorth, 130, 0);
 ctx.drawImage(pipeSouth, 130, 330);
-ctx.rotate(45)
+//ctx.rotate(45)
 ctx.drawImage(bird, birdX, birdY);
-ctx.restore();
-// the jump eventListener
-document.addEventListener("keyup", mvUp);
+//ctx.restore();
 
 // pipes
 let pipe = [
@@ -87,18 +115,17 @@ let ground=[
 	}
 ]
 // The flap
-moveBird=()=>{
+const moveBird=()=>{
 	setTimeout(()=>{bird.src="img/bluebird-midflap.png"},200)
 	setTimeout(()=>{bird.src="img/bluebird-downflap.png"},300);
 	setTimeout(()=>{bird.src="img/bluebird-upflap.png"},400)
-}
-window.onload=()=>{
-	flyMusic.play()
 }
 moveBird();
 const MB=setInterval(moveBird,600);
 //
 const startGame = () => {
+	// the jump eventListener
+	document.addEventListener("keyup", mvUp);
 	if (!finish) {
 		// drawing the background image
 		ctx.save();
