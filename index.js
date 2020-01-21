@@ -51,37 +51,6 @@ pipeSouth.src = "img/pipeSouth.png";
 score.src="img/score/"+scoreText+".png";
 gameover.src = "img/gameover.png";
 
-/////////////////////////////////////////
-function getMousePos(canvas, event) {
-	var rect = canvas.getBoundingClientRect();
-	return {
-		x: event.clientX - rect.left,
-		y: event.clientY - rect.top
-	};
-}
-function isInside(pos, rect){
-	return pos.x > rect.x && pos.x < (rect.x+rect.width) && pos.y < (rect.y+rect.heigth) && pos.y > rect.y
-}
-var rect = {
-	x:0,
-	y:0,
-	width:cvs.width,
-	heigth:cvs.height
-};
-cvs.addEventListener('click', function(evt) {
-	var mousePos = getMousePos(cvs, evt);
-
-	if (isInside(mousePos,rect)) {
-		alert('clicked inside rect');
-		console.log(mousePos)
-		
-    }else{
-		alert('clicked outside rect');
-		console.log(mousePos)
-		console.log(rect)
-    }	
-}, false);
-////////////////////////////////
 // the game state
 let finish = false;
 
